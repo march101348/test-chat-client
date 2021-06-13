@@ -1,0 +1,17 @@
+.rooms-chat {
+  position: relative;
+  width: 50%;
+  background-color: powderblue;
+}
+
+.rooms-chat-root {
+  background-color: crimson !important;
+  position: relative !important;
+}
+
+.fix-bottom {
+  position: fixed;
+  width: 50%;
+  padding: 0 50px 0 50px !important;
+  bottom: 30px;
+}

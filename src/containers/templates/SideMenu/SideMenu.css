@@ -1,0 +1,8 @@
+.side-menu {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.side-menu-paper {
+  width: 240px;
+}

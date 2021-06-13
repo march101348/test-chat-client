@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router";
+import "ress"
+import "./App.css";
+
+import { HomeTemplate } from "./conponents/pages/Home/Home.template";
+import { RoomsTemplate } from "./conponents/pages/Rooms/Rooms.template";
+import { UsersTemplate } from "./conponents/pages/Users/Users.template";
+import { SideMenu } from "./containers/templates/SideMenu/SideMenu";
+import { MyDataStore } from "./contexts/UserContext/MyData.store";
+import { menus } from "./data/Menu";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MyDataStore>
+        <SideMenu menus={menus} />
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<HomeTemplate />} />
+            <Route path="/users" element={<UsersTemplate />} />
+            <Route path="/rooms" element={<RoomsTemplate />} />
+          </Routes>
+        </main>
+      </MyDataStore>
     </div>
   );
 }

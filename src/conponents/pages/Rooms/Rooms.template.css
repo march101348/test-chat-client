@@ -1,0 +1,17 @@
+.rooms {
+  height: 100%;
+  position: relative;
+  display: flex;
+}
+
+.rooms-pane {
+  width: 50%;
+}
+
+.rooms-pane-root {
+  position: relative !important;
+}
+
+.rooms-list {
+  padding-right: 30px;
+}
