@@ -38,3 +38,15 @@ export const getUsers = (): Promise<User[]> => {
     }, 500);
   });
 }
+
+export const searchUsers = (userName: string): Promise<User[]> => {
+  return new Promise<User[]>((resolve, reject) => {
+    setTimeout(() => {
+      if (userList.length) {
+        resolve(userList);
+      } else {
+        reject('no users');
+      }
+    }, 500);
+  });
+}
