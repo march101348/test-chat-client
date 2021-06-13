@@ -9,6 +9,11 @@
   position: relative !important;
 }
 
+.rooms-chat-list {
+  max-height: 90%;
+  overflow: auto;
+}
+
 .fix-bottom {
   position: fixed;
   width: 50%;

@@ -3,7 +3,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { ChatColumn } from "../../../containers/molecules/ChatColumn/ChatColumn";
 import { MessageInput } from "../../../containers/molecules/MessageInput/MessageInput";
 import { MyDataContext } from "../../../contexts/UserContext/MyData.store";
-import { Chat, getChats } from "../../../data/Chat";
+import { Chat, ChatDecoder, getChats } from "../../../data/Chat";
 
 import "./ChatPane.template.css";
 
@@ -19,13 +19,21 @@ export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
 
   const socket = useMemo(() => new WebSocket("ws://127.0.0.1:8080/ws/"), []);
   socket.onopen = (_) => {
-    socket.send("hello from client!!!");
+    // socket.send("hello from client!!!");
+  };
+  socket.onmessage = (event) => {
+    ChatDecoder.runPromise(JSON.parse(event.data)).then((chat) => {
+      setChats((prev) => {
+        return [...prev, chat];
+      });
+    }).catch(() => {
+      console.log('parse error!!!');
+    });
   };
 
   useEffect(() => {
     return () => socket.close();
   }, [socket]);
-
 
   useEffect(() => {
     getChats(viewChatId).then((result) => setChats(result));
@@ -36,16 +44,13 @@ export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
   };
 
   const handleOnInputSubmit = () => {
-    setChats((prev) => {
-      const chat = {
-        id: 0,
-        userId: myData.id,
-        content: input,
-      };
-      setInput("");
-      socket.send(input);
-      return [...prev, chat];
-    });
+    const chat = {
+      id: Math.random(),
+      userId: myData.id,
+      content: input,
+    };
+    socket.send(JSON.stringify(chat));
+    setInput("");
   };
 
   return (

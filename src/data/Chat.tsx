@@ -1,8 +1,16 @@
+import { Decoder, number, object, string } from "@mojotech/json-type-validation";
+
 export type Chat = {
   id: number;
   userId: number;
   content: string; // TODO: string | Image | Video
 };
+
+export const ChatDecoder: Decoder<Chat> = object({
+  id: number(),
+  userId: number(),
+  content: string(),
+});
 
 const chatListOne: Chat[] = [
   {

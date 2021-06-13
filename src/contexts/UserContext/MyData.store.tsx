@@ -23,7 +23,7 @@ const reducer = (state: MyData, action: Action) => {
 };
 
 const initialState: MyData = {
-  id: 0,
+  id: Math.random(),
   password: "",
   name: "",
   age: 0,
