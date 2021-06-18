@@ -4,31 +4,30 @@ import { ChatColumn } from "../../../containers/molecules/ChatColumn/ChatColumn"
 import { MessageInput } from "../../../containers/molecules/MessageInput/MessageInput";
 import { MyDataContext } from "../../../contexts/UserContext/MyData.store";
 import { Chat, ChatDecoder, getChats } from "../../../data/Chat";
+import { Room } from "../../../data/Room";
 
 import "./ChatPane.template.css";
 
-export type ChatPaneProps = {
-  viewChatId: number;
-  roomName: string;
-};
-
-export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
+export const ChatPane: React.FC<Room> = ({ id, name }) => {
   const { state: myData } = useContext(MyDataContext);
   const [chats, setChats] = useState<Chat[]>([]);
   const [input, setInput] = useState<string>("");
 
+  // TODO: WS関係の処理をAPI層へ移譲
   const socket = useMemo(() => new WebSocket("ws://127.0.0.1:8080/ws/"), []);
   socket.onopen = (_) => {
     // socket.send("hello from client!!!");
   };
   socket.onmessage = (event) => {
-    ChatDecoder.runPromise(JSON.parse(event.data)).then((chat) => {
-      setChats((prev) => {
-        return [...prev, chat];
+    ChatDecoder.runPromise(JSON.parse(event.data))
+      .then((chat) => {
+        setChats((prev) => {
+          return [...prev, chat];
+        });
+      })
+      .catch(() => {
+        console.log("parse error!!!");
       });
-    }).catch(() => {
-      console.log('parse error!!!');
-    });
   };
 
   useEffect(() => {
@@ -36,8 +35,8 @@ export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
   }, [socket]);
 
   useEffect(() => {
-    getChats(viewChatId).then((result) => setChats(result));
-  }, [viewChatId]);
+    getChats(id).then((result) => setChats(result));
+  }, [id]);
 
   const handleOnInputChange = (input: string) => {
     setInput(input);
@@ -45,8 +44,8 @@ export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
 
   const handleOnInputSubmit = () => {
     const chat = {
-      id: Math.random(),
-      userId: myData.id,
+      user_id: myData.id,
+      room_id: id,
       content: input,
     };
     socket.send(JSON.stringify(chat));
@@ -55,7 +54,7 @@ export const ChatPane: React.FC<ChatPaneProps> = ({ viewChatId, roomName }) => {
 
   return (
     <div className="rooms-chat">
-      <AppBar className="rooms-chat-root">{roomName}</AppBar>
+      <AppBar className="rooms-chat-root">{name}</AppBar>
       <List className="rooms-chat-list">
         {chats &&
           chats.map((chat) => (

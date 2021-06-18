@@ -1,59 +1,76 @@
-import { Decoder, number, object, string } from "@mojotech/json-type-validation";
+import {
+  array,
+  Decoder,
+  number,
+  object,
+  string,
+} from "@mojotech/json-type-validation";
 
 export type Chat = {
   id: number;
-  userId: number;
+  user_id: number;
+  room_id: number;
   content: string; // TODO: string | Image | Video
 };
 
 export const ChatDecoder: Decoder<Chat> = object({
   id: number(),
-  userId: number(),
+  user_id: number(),
+  room_id: number(),
   content: string(),
 });
+
+export const ChatListDecoder: Decoder<Chat[]> = array(ChatDecoder);
 
 const chatListOne: Chat[] = [
   {
     id: 0,
-    userId: 0,
-    content: 'hello from maruyama',
+    user_id: 0,
+    room_id: 0,
+    content: "hello from maruyama",
   },
   {
     id: 1,
-    userId: 1,
-    content: 'hello from shuhei haha',
+    user_id: 1,
+    room_id: 0,
+    content: "hello from shuhei haha",
   },
   {
     id: 2,
-    userId: 0,
-    content: 'hi shuhei how are you',
+    user_id: 0,
+    room_id: 0,
+    content: "hi shuhei how are you",
   },
 ];
 
 const chatListTwo: Chat[] = [
   {
     id: 4,
-    userId: 0,
-    content: 'hello!!!!!!',
+    user_id: 0,
+    room_id: 1,
+    content: "hello!!!!!!",
   },
   {
     id: 5,
-    userId: 3,
-    content: 'hello hello',
+    user_id: 3,
+    room_id: 1,
+    content: "hello hello",
   },
   {
     id: 6,
-    userId: 1,
-    content: 'aaaaaaaa',
+    user_id: 1,
+    room_id: 1,
+    content: "aaaaaaaa",
   },
   {
     id: 7,
-    userId: 2,
-    content: 'iiiiiiiiiiiiii',
+    user_id: 2,
+    room_id: 1,
+    content: "iiiiiiiiiiiiii",
   },
 ];
 
-export const getChats = (roomId: number): Promise<Chat[]> => {
+const getChatsOffline = (roomId: number): Promise<Chat[]> => {
   return new Promise<Chat[]>((resolve, reject) => {
     setTimeout(() => {
       if (chatListOne.length) {
@@ -63,8 +80,19 @@ export const getChats = (roomId: number): Promise<Chat[]> => {
           resolve(chatListTwo);
         }
       } else {
-        reject('no users');
+        reject("no users");
       }
     }, 500);
   });
-}
+};
+
+export const getChats = (roomId: number): Promise<Chat[]> => {
+  return fetch(`http://localhost:8080/rest/chat/all/${roomId}`)
+    .then((ret) => {
+      return ret.json().then((json) => {
+        console.log(json);
+        return ChatListDecoder.runPromise(json);
+      });
+    })
+    .catch(() => getChatsOffline(roomId));
+};

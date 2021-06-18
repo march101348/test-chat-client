@@ -1,0 +1,8 @@
+.login-content {
+  position: relative;
+  width: 100%;
+}
+
+.app-bar {
+  flex-grow: 1;
+}

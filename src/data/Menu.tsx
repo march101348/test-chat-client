@@ -1,4 +1,4 @@
-import MailIcon from "@material-ui/icons/Mail"
+import MailIcon from "@material-ui/icons/Mail";
 
 export type Menu = {
   path: string;
@@ -8,18 +8,13 @@ export type Menu = {
 
 export const menus: Menu[] = [
   {
-    path: '/',
-    name: 'HOME',
-    icon: <MailIcon />
+    path: "/home/users",
+    name: "USERS",
+    icon: <MailIcon />,
   },
   {
-    path: '/users',
-    name: 'USERS',
-    icon: <MailIcon />
-  },
-  {
-    path: '/rooms',
-    name: 'ROOMS',
-    icon: <MailIcon />
+    path: "/home/rooms",
+    name: "ROOMS",
+    icon: <MailIcon />,
   },
 ];
