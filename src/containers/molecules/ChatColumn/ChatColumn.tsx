@@ -10,9 +10,9 @@ export type ChatColumnProps = {
 
 export const ChatColumn: React.VFC<ChatColumnProps> = ({
   myID,
-  chat: { userId, content },
+  chat: { user_id, content },
 }) => {
-  const align = myID === userId ? "align-right" : "align-left";
+  const align = myID === user_id ? "align-right" : "align-left";
   return (
     <ListItem
       className="chat-column"

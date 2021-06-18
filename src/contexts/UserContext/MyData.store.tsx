@@ -1,12 +1,18 @@
 import { createContext, useReducer } from "react";
 import { MyData } from "../../data/MyData";
 
-type Action =
+export type Action =
+  | { type: "SET_MY_DATA"; data: MyData }
   | { type: "CHANGE_NAME"; name: string }
   | { type: "CHANGE_PASS"; pass: string };
 
 const reducer = (state: MyData, action: Action) => {
   switch (action.type) {
+    case "SET_MY_DATA":
+      return {
+        ...state,
+        ...action.data
+      }
     case "CHANGE_NAME":
       return {
         ...state,
@@ -23,10 +29,8 @@ const reducer = (state: MyData, action: Action) => {
 };
 
 const initialState: MyData = {
-  id: Math.random(),
-  password: "",
-  name: "",
-  age: 0,
+  id: -1,
+  name: ''
 };
 
 export const MyDataContext = createContext(

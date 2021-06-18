@@ -7,23 +7,21 @@ import "./Rooms.template.css";
 
 export const RoomsTemplate: React.VFC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [viewChatId, setViewChatId] = useState<number>();
+  const [viewRoom, setViewRoom] = useState<Room>();
 
   useEffect(() => {
     getRooms().then((result) => setRooms(result));
   }, []);
 
   const handleOnClickRoom = (id: number) => {
-    setViewChatId(id);
+    const room = rooms.find((room) => room.id === id);
+    setViewRoom(room);
   };
 
   return (
     <div className="rooms">
       <RoomPane rooms={rooms} onClick={handleOnClickRoom} />
-      {viewChatId && <ChatPane
-        viewChatId={viewChatId}
-        roomName={viewChatId !== undefined ? rooms[viewChatId].name : ""}
-      />}
+      {viewRoom && <ChatPane {...viewRoom} />}
     </div>
   );
 };
