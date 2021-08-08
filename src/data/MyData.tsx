@@ -3,9 +3,10 @@ import {
   number,
   object,
   string,
-} from "@mojotech/json-type-validation";
+} from '@mojotech/json-type-validation';
 
 export type NewMyData = {
+  // eslint-disable-next-line camelcase
   my_id: string;
   password: string;
   name: string;
@@ -21,13 +22,13 @@ export const MyDataDecoder: Decoder<MyData> = object({
   name: string(),
 });
 
-const postMyDataOffline = (): Promise<MyData> => {
-  return new Promise<MyData>((resolve, reject) => {
-    resolve({ id: 0, name: "unknown" });
+const postMyDataOffline = (): Promise<MyData> =>
+  new Promise<MyData>((resolve) => {
+    resolve({ id: 0, name: 'unknown' });
   });
-};
 
 export const postMyData = async (
+  // eslint-disable-next-line camelcase
   my_id: string,
   password: string,
   name: string
@@ -37,17 +38,13 @@ export const postMyData = async (
     password,
     name,
   };
-  return fetch("http://localhost:8080/rest/mydata/new", {
-    method: "POST",
+  return fetch('http://localhost:8080/rest/mydata/new', {
+    method: 'POST',
     body: JSON.stringify(mydata),
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   })
-    .then((ret) => {
-      return ret.json().then((json) => {
-        return MyDataDecoder.runPromise(json);
-      });
-    })
+    .then((ret) => ret.json().then((json) => MyDataDecoder.runPromise(json)))
     .catch(() => postMyDataOffline());
 };

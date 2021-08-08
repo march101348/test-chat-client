@@ -1,7 +1,7 @@
-import { ListItem, ListItemText } from "@material-ui/core";
-import { Chat } from "../../../data/Chat";
+import { ListItem, ListItemText } from '@material-ui/core';
+import { Chat } from '../../../data/Chat';
 
-import "./ChatColumn.css";
+import './ChatColumn.css';
 
 export type ChatColumnProps = {
   myID: number;
@@ -10,9 +10,9 @@ export type ChatColumnProps = {
 
 export const ChatColumn: React.VFC<ChatColumnProps> = ({
   myID,
-  chat: { user_id, content },
+  chat: { user_id: userId, content },
 }) => {
-  const align = myID === user_id ? "align-right" : "align-left";
+  const align = myID === userId ? 'align-right' : 'align-left';
   return (
     <ListItem
       className="chat-column"

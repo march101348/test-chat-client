@@ -1,5 +1,5 @@
-import { List, ListItem, ListItemText } from "@material-ui/core";
-import { Room } from "../../../data/Room";
+import { List, ListItem, ListItemText } from '@material-ui/core';
+import { Room } from '../../../data/Room';
 
 export type RoomColumnProps = {
   room: Room;
@@ -7,20 +7,16 @@ export type RoomColumnProps = {
 };
 
 export const RoomColumn: React.VFC<RoomColumnProps> = ({
-  room: {
-    name,
-    member,
-  },
+  room: { name, member },
   onClick,
-}) => {
-  return (
-    <ListItem alignItems="flex-start" onClick={onClick} divider>
-      <ListItemText>{name}</ListItemText>
-      <List>
-        {member && member.map((user) => (
+}) => (
+  <ListItem alignItems="flex-start" onClick={onClick} divider>
+    <ListItemText>{name}</ListItemText>
+    <List>
+      {member &&
+        member.map((user) => (
           <ListItemText key={user.id}>{user.name}</ListItemText>
         ))}
-      </List>
-    </ListItem>
-  );
-}
+    </List>
+  </ListItem>
+);

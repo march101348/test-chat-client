@@ -1,45 +1,42 @@
-import { AppBar, List } from "@material-ui/core";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { ChatColumn } from "../../../containers/molecules/ChatColumn/ChatColumn";
-import { MessageInput } from "../../../containers/molecules/MessageInput/MessageInput";
-import { MyDataContext } from "../../../contexts/UserContext/MyData.store";
-import { Chat, ChatDecoder, getChats } from "../../../data/Chat";
-import { Room } from "../../../data/Room";
+import { AppBar, List } from '@material-ui/core';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { ChatColumn } from '../../../containers/molecules/ChatColumn/ChatColumn';
+import { MessageInput } from '../../../containers/molecules/MessageInput/MessageInput';
+import { MyDataContext } from '../../../contexts/UserContext/MyData.store';
+import { Chat, ChatDecoder, getChats } from '../../../data/Chat';
+import { Room } from '../../../data/Room';
 
-import "./ChatPane.template.css";
+import './ChatPane.template.css';
 
 export const ChatPane: React.FC<Room> = ({ id, name }) => {
   const { state: myData } = useContext(MyDataContext);
   const [chats, setChats] = useState<Chat[]>([]);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>('');
 
   // TODO: WS関係の処理をAPI層へ移譲
-  const socket = useMemo(() => new WebSocket("ws://127.0.0.1:8080/ws/"), []);
-  socket.onopen = (_) => {
+  const socket = useMemo(() => new WebSocket('ws://127.0.0.1:8080/ws/'), []);
+  socket.onopen = () => {
     // socket.send("hello from client!!!");
   };
   socket.onmessage = (event) => {
     ChatDecoder.runPromise(JSON.parse(event.data))
       .then((chat) => {
-        setChats((prev) => {
-          return [...prev, chat];
-        });
+        setChats((prev) => [...prev, chat]);
       })
       .catch(() => {
-        console.log("parse error!!!");
+        // eslint-disable-next-line no-console
+        console.log('parse error!!!');
       });
   };
 
-  useEffect(() => {
-    return () => socket.close();
-  }, [socket]);
+  useEffect(() => () => socket.close(), [socket]);
 
   useEffect(() => {
     getChats(id).then((result) => setChats(result));
   }, [id]);
 
-  const handleOnInputChange = (input: string) => {
-    setInput(input);
+  const handleOnInputChange = (text: string) => {
+    setInput(text);
   };
 
   const handleOnInputSubmit = () => {
@@ -49,7 +46,7 @@ export const ChatPane: React.FC<Room> = ({ id, name }) => {
       content: input,
     };
     socket.send(JSON.stringify(chat));
-    setInput("");
+    setInput('');
   };
 
   return (
@@ -66,7 +63,7 @@ export const ChatPane: React.FC<Room> = ({ id, name }) => {
         onChange={handleOnInputChange}
         onSubmit={handleOnInputSubmit}
         input={input}
-      ></MessageInput>
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField } from '@material-ui/core';
 
-import "./MessageInput.css"
+import './MessageInput.css';
 
 export type MessageInputProps = {
   className?: string;
@@ -14,19 +14,17 @@ export const MessageInput: React.VFC<MessageInputProps> = ({
   onChange,
   onSubmit,
   input,
-}) => {
-  return (
-    <div className={`message-input ${className}`}>
-      <TextField
-        className="message-input-text"
-        value={input}
-        onChange={(ev) => onChange(ev.target.value)}
-        rowsMax={4}
-        multiline
-      />
-      <Button variant="contained" onClick={onSubmit}>
-        Submit
-      </Button>
-    </div>
-  );
-};
+}) => (
+  <div className={`message-input ${className}`}>
+    <TextField
+      className="message-input-text"
+      value={input}
+      onChange={(ev) => onChange(ev.target.value)}
+      rowsMax={4}
+      multiline
+    />
+    <Button variant="contained" onClick={onSubmit}>
+      Submit
+    </Button>
+  </div>
+);

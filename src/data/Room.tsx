@@ -1,4 +1,4 @@
-import { User } from "./User";
+import { User } from './User';
 
 export type Room = {
   id: number;
@@ -9,52 +9,50 @@ export type Room = {
 const roomList: Room[] = [
   {
     id: 0,
-    name: "meeting",
+    name: 'meeting',
     member: [
       {
         id: 0,
-        name: "maruyama",
+        name: 'maruyama',
         age: 25,
       },
       {
         id: 1,
-        name: "shuhei",
+        name: 'shuhei',
         age: 18,
       },
     ],
   },
   {
     id: 1,
-    name: "greeting",
+    name: 'greeting',
     member: [
       {
         id: 0,
-        name: "maruyama",
+        name: 'maruyama',
         age: 25,
       },
       {
         id: 2,
-        name: "yamada",
+        name: 'yamada',
         age: 48,
       },
       {
         id: 3,
-        name: "tarou",
+        name: 'tarou',
         age: 60,
       },
     ],
   },
 ];
 
-
-export const getRooms = (): Promise<Room[]> => {
-  return new Promise<Room[]>((resolve, reject) => {
+export const getRooms = (): Promise<Room[]> =>
+  new Promise<Room[]>((resolve, reject) => {
     setTimeout(() => {
       if (roomList.length) {
         resolve(roomList);
       } else {
-        reject('no users');
+        reject(new Error('no users'));
       }
     }, 500);
   });
-}

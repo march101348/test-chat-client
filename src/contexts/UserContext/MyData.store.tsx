@@ -1,24 +1,24 @@
-import { createContext, useReducer } from "react";
-import { MyData } from "../../data/MyData";
+import { createContext, useReducer } from 'react';
+import { MyData } from '../../data/MyData';
 
 export type Action =
-  | { type: "SET_MY_DATA"; data: MyData }
-  | { type: "CHANGE_NAME"; name: string }
-  | { type: "CHANGE_PASS"; pass: string };
+  | { type: 'SET_MY_DATA'; data: MyData }
+  | { type: 'CHANGE_NAME'; name: string }
+  | { type: 'CHANGE_PASS'; pass: string };
 
 const reducer = (state: MyData, action: Action) => {
   switch (action.type) {
-    case "SET_MY_DATA":
+    case 'SET_MY_DATA':
       return {
         ...state,
-        ...action.data
-      }
-    case "CHANGE_NAME":
+        ...action.data,
+      };
+    case 'CHANGE_NAME':
       return {
         ...state,
         name: action.name,
       };
-    case "CHANGE_PASS":
+    case 'CHANGE_PASS':
       return {
         ...state,
         pass: action.pass,
@@ -30,7 +30,7 @@ const reducer = (state: MyData, action: Action) => {
 
 const initialState: MyData = {
   id: -1,
-  name: ''
+  name: '',
 };
 
 export const MyDataContext = createContext(
@@ -40,11 +40,11 @@ export const MyDataContext = createContext(
   }
 );
 
-export const MyDataStore: React.FC = (props) => {
+export const MyDataStore: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <MyDataContext.Provider value={{ state, dispatch }}>
-      {props.children}
+      {children}
     </MyDataContext.Provider>
   );
 };
